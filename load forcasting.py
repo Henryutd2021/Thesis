@@ -10,8 +10,7 @@ import keras.layers
 def channel_normalization(x):
     # Normalize by the highest activation
     max_values = K.max(K.abs(x), 2, keepdims=True) + 1e-5
-    out = x / max_values
-    return out
+    return x / max_values
 
 
 def wave_net_activation(x):
@@ -110,11 +109,10 @@ def dilated_tcn(num_feat, num_classes, nb_filters,
         adam = optimizers.Adam(lr=0.01, clipnorm=1., decay=0.1, amsgrad=True)
         model.compile(adam, loss='mean_squared_error')
 
-    if return_param_str:
-        param_str = 'D-TCN_C{}_B{}_L{}'.format(2, nb_stacks, dilatations)
-        return model, param_str
-    else:
+    if not return_param_str:
         return model
+    param_str = f'D-TCN_C2_B{nb_stacks}_L{dilatations}'
+    return model, param_str
 
 
 import tensorflow as tf
@@ -161,7 +159,7 @@ def dofile(start_point, end_point, point):
     X = [];
     Y = [];
     AUX_X = []
-    for j in range(n_residents):
+    for _ in range(n_residents):
         df = pd.read_csv('')
         df = df.loc[2 * point - 1:, ['Load']]
         df = pd.DataFrame(np.array(df), columns=['Load'])
@@ -220,7 +218,7 @@ def doaux(start_point, end_point):
     # 20544  23112  25680-240
     AUX_X = []
     for j in range(n_residents):
-        for i in range(start_point, end_point - 48, 48):
+        for _ in range(start_point, end_point - 48, 48):
             aux_x = vec_out.loc[j, :]
             aux_x = np.array(aux_x).reshape((48,)).tolist()
             AUX_X.append(aux_x)
@@ -241,7 +239,7 @@ class PrintSomeValues(keras.callbacks.Callback):
 
     def on_epoch_begin(self, epoch, logs={}):
         lr = K.get_value(model.optimizer.lr)
-        print("current learning rate is {}".format(lr))
+        print(f"current learning rate is {lr}")
         pred = model.predict({'input_layer': x_test, 'aux_input': aux_x_test})
         pred = np.array(pred)
         predict_all = pred.flatten()
@@ -255,7 +253,7 @@ class PrintSomeValues(keras.callbacks.Callback):
         r_2 = eleceval.r2(predict_all, truth_all)
         print("After %d training step(s),"
               "on test data MAAPE = %.4f,MAPE = %.4f,MAE = %.4f,MSE = %.4f,RMSE = %.4f,R2 = %.4f" \
-              % (epoch, maape, mape, mae, mse, rmse, r_2))
+                  % (epoch, maape, mape, mae, mse, rmse, r_2))
 
         if maape <= self.maape_flag:
             self.maape_flag = maape
@@ -266,7 +264,7 @@ class PrintSomeValues(keras.callbacks.Callback):
             # Print true value and predicted value
             y_out = pd.DataFrame(y_con, columns=["true_data", "pre_data"])
             y_out.to_csv('steps=%d-MAAPE=%.4f.csv' \
-                         % (epoch, maape))
+                             % (epoch, maape))
 
 
 model, param_str = dilated_tcn(output_slice_index='last',

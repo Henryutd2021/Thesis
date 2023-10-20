@@ -14,7 +14,7 @@ start = time.perf_counter()
 # Solve
 ampl.solve()
 end = time.perf_counter()
-print('Running time: %s Seconds'%(end-start))
+print(f'Running time: {end - start} Seconds')
 
 writer = pd.ExcelWriter('fmla_sca8(buy 140).xlsx')
 x = ampl.getVariables()

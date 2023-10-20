@@ -6,8 +6,6 @@ from collections import defaultdict
 cf = 44
 co = 2
 cm = 42
-od = []
-
 df = pd.read_csv('input_data_dh_y.csv')
 d = defaultdict(list)
 
@@ -41,8 +39,7 @@ m.addConstrs((se[j] == se[j-1]+pes_ch[j]-pes_dis[j] for j in time[1:]), 'e_s')
 
 
 m.optimize()
-for s in range(len(df)):
-    od.append(pmda[s].X)
+od = [pmda[s].X for s in range(len(df))]
 df.insert(loc=4, column='pmda', value=od)
 df.to_csv('input_data_dh_y.csv')
 # for var in m.getVars():

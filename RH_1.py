@@ -19,9 +19,8 @@ while n < len(df)-(PH-1):
     d = defaultdict(list)
     for i in range(0, PH+1):
         if i == 0:
-            for k in range(6):
+            for _ in range(6):
                 d[i].append(0)
-                continue
         else:
             for r in ['pel', 'thl', 'pres', 'pmda', 'cm', 'cp']:
                 d[i].append(df[r].tolist()[n])
