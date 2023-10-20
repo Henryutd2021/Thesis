@@ -27,9 +27,9 @@ data.set_index(['Hour_End'], inplace=True)
 def test_stationarity(ts):
     stats = ['Test Statistic','p-value','Lags','Observations']
     df_test = adfuller(ts, autolag='AIC')
-    df_results = pd.Series(df_test[0:4], index=stats)
+    df_results = pd.Series(df_test[:4], index=stats)
     for key,value in df_test[4].items():
-        df_results['Critical Value (%s)'%key] = value
+        df_results[f'Critical Value ({key})'] = value
     print(df_results)
 
 

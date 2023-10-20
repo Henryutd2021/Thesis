@@ -43,7 +43,7 @@ def cuttingPlot(roll_width, widths, solution):
     acc = [0]*len(solution)
     for p, (patt, rep) in enumerate(solution):
         for i in range(len(widths)):
-            for j in range(patt[i]):
+            for _ in range(patt[i]):
                 vec = [0]*len(solution)
                 vec[p] = widths[i]
                 plt.bar(ind, vec, width=0.35, bottom=acc)

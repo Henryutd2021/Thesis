@@ -41,10 +41,7 @@ def get_no_date(date_str_li, start_date='', end_date=''):
 
 for prevs, item, nxt in previous_and_next(df['date']):
     if nxt and prevs != None:
-        # item = item.to_pydatetime()
-        # nxt = nxt.to_pydatetime()
-        # prevs = prevs.to_pydatetime()
-        if item.minute != 51 and [item.hour == nxt.hour or item.hour == prevs.hour]:
+        if item.minute != 51:
             df.drop(index=(df.loc[(df['date'] == item)].index), inplace=True)
 
 
@@ -58,11 +55,8 @@ outputpath='data.csv'
 df.to_csv(outputpath,sep=',',index=False,header=True)
 
 
-lii = []
 df = pd.read_csv('data.csv', usecols=['date'])
-for i in df['date']:
-    lii.append(i)
-
+lii = list(df['date'])
 no_list = get_no_date(lii, start_date='2014-01-01 00:51:00', end_date='2016-12-31 23:51:00')
 print(no_list)
 

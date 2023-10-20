@@ -67,11 +67,7 @@ def show_plot(plot_data, delta, title):
     labels = ['Historical', 'True Value', 'Prediction']
     marker = ['.-', 'rx', 'go']
     time_steps = create_time_steps(plot_data[0].shape[0])
-    if delta:
-        future = delta
-    else:
-        future = 0
-
+    future = delta if delta else 0
     plt.title(title, font2)
     for i, x in enumerate(plot_data):
         if i:
